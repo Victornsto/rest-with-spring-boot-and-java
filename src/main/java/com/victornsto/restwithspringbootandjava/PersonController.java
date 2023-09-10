@@ -1,7 +1,8 @@
 package com.victornsto.restwithspringbootandjava;
 
-import com.victornsto.restwithspringbootandjava.model.Person;
+import com.victornsto.restwithspringbootandjava.data.vo.v1.PersonVo;
 import com.victornsto.restwithspringbootandjava.services.PersonServices;
+import com.victornsto.restwithspringbootandjava.v2.PersonVoV2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,7 +18,7 @@ public class PersonController {
     private PersonServices personServices;
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Person findByID(
+    public PersonVo findByID(
             @PathVariable(value = "id") Long id
     ) throws Exception {
 
@@ -25,17 +26,21 @@ public class PersonController {
     }
 
     @GetMapping( produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Person> findAll() {
+    public List<PersonVo> findAll() {
         return personServices.findAll();
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Person create(@RequestBody Person person){
+    public PersonVo create(@RequestBody PersonVo person){
         return personServices.create(person);
+    }
+    @PostMapping(value = "/v2",produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public PersonVoV2 createV2(@RequestBody PersonVoV2 person){
+        return personServices.createV2(person);
     }
     @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public Person update(@RequestBody Person person){
+    public PersonVo update(@RequestBody PersonVo person){
         return personServices.update(person);
     }
 

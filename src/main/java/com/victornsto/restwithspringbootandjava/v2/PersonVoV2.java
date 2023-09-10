@@ -1,27 +1,34 @@
-package com.victornsto.restwithspringbootandjava.model;
-
-import jakarta.persistence.*;
+package com.victornsto.restwithspringbootandjava.v2;
 
 import java.io.Serial;
 import java.io.Serializable;
-@Entity
-@Table(name = "person")
-public class Person implements Serializable {
+import java.util.Date;
+
+public class PersonVoV2 implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long id;
-    @Column(name = "first_name", nullable = false, length = 80)
+
     private String firstName;
-    @Column(name = "last_name", nullable = false, length = 80)
+
     private String lastName;
-    @Column(nullable = false, length = 80)
+
     private String address;
-    @Column(nullable = false, length = 80)
+
     private String gender;
 
-    public Person() {
+    private Date birthDay;
+
+    public Date getBirthDay() {
+        return birthDay;
+    }
+
+    public void setBirthDay(Date birthDay) {
+        this.birthDay = birthDay;
+    }
+
+    public PersonVoV2() {
     }
 
     public Long getId() {
@@ -36,7 +43,7 @@ public class Person implements Serializable {
         return firstName;
     }
 
-    public void setfirstName(String firstName) {
+    public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
