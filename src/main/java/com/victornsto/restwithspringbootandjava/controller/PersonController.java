@@ -1,7 +1,7 @@
 package com.victornsto.restwithspringbootandjava.controller;
 
-import com.victornsto.restwithspringbootandjava.dto.PersonDto;
-import com.victornsto.restwithspringbootandjava.model.Person;
+import com.victornsto.restwithspringbootandjava.dto.v1.PersonDto;
+import com.victornsto.restwithspringbootandjava.dto.v2.v1.PersonDtoV2;
 import com.victornsto.restwithspringbootandjava.service.PersonServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -29,14 +29,22 @@ public class PersonController {
     @PostMapping(
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public PersonDto create(@RequestBody Person person) {
-        return service.create(person);
+    public PersonDto create(@RequestBody PersonDto personDto) {
+        return service.create(personDto);
+    }
+
+    @PostMapping(
+            value = "/v2",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public PersonDtoV2 createV2(@RequestBody PersonDtoV2 person) {
+        return service.createV2(person);
     }
 
     @PutMapping(
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public PersonDto update(@RequestBody Person person) {
+    public PersonDto update(@RequestBody PersonDto person) {
         return service.update(person);
     }
 

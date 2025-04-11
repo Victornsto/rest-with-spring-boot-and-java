@@ -1,6 +1,6 @@
 package com.victornsto.restwithspringbootandjava.converter;
 
-import com.victornsto.restwithspringbootandjava.dto.PersonDto;
+import com.victornsto.restwithspringbootandjava.dto.v1.PersonDto;
 import com.victornsto.restwithspringbootandjava.model.Person;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;

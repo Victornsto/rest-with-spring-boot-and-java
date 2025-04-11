@@ -1,4 +1,4 @@
-package com.victornsto.restwithspringbootandjava.dto;
+package com.victornsto.restwithspringbootandjava.dto.v1;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
