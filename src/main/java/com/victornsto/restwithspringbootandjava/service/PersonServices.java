@@ -1,5 +1,6 @@
 package com.victornsto.restwithspringbootandjava.service;
 
+import com.victornsto.restwithspringbootandjava.controller.PersonController;
 import com.victornsto.restwithspringbootandjava.dto.v1.PersonDto;
 import com.victornsto.restwithspringbootandjava.dto.v2.v1.PersonDtoV2;
 import com.victornsto.restwithspringbootandjava.exceptions.ResourceNotFoudException;
@@ -9,6 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import java.util.List;
 import java.util.Objects;
@@ -26,18 +29,22 @@ public class PersonServices {
 
     public List<PersonDto> findAll() {
         logger.info("Finding all people!");
-        return personRepository.findAll()
+        var dto = personRepository.findAll()
                 .stream()
                 .map(person -> conversionService.convert(person, PersonDto.class))
-                .collect(Collectors.toList());
+                .toList();
+        dto.forEach(PersonServices::addHateoasLinks);
+        return dto;
     }
 
     public PersonDto findById(String id) {
         logger.info("Finding one person!");
-        return  conversionService.convert(
+        var dto = conversionService.convert(
                 this.findByIdRepository(Long.valueOf(id)),
-                PersonDto.class
-        );
+                PersonDto.class);
+        assert dto != null;
+        addHateoasLinks(dto);
+        return dto;
     }
 
     public Person findByIdRepository(Long id) {
@@ -52,7 +59,10 @@ public class PersonServices {
             result = personRepository.save(Objects.requireNonNull(conversionService.convert(personDto, Person.class)));
 
         }
-        return conversionService.convert(result, PersonDto.class);
+        var dto = conversionService.convert(result, PersonDto.class);
+        assert dto != null;
+        addHateoasLinks(dto);
+        return dto;
     }
 
     public PersonDtoV2 createV2(PersonDtoV2 person) {
@@ -72,13 +82,27 @@ public class PersonServices {
         result.setFirstName(personDto.getFirstName());
         result.setLastName(personDto.getLastName());
         result.setGender(personDto.getGender());
-        return conversionService.convert(personRepository.save(result), PersonDto.class);
+        var dto = conversionService.convert(personRepository.save(result), PersonDto.class);
+        assert dto != null;
+        addHateoasLinks(dto);
+        return dto;
     }
 
     public void delete(String id) {
         logger.info("Deleting one person!");
         Person result = this.findByIdRepository(Long.valueOf(id));
+        var dto = conversionService.convert(result, PersonDto.class);
         personRepository.delete(result);
+        assert dto != null;
+        addHateoasLinks(dto);
+    }
+
+    private static void addHateoasLinks(PersonDto dto) {
+        dto.add(linkTo(methodOn(PersonController.class).findById(String.valueOf(dto.getId()))).withSelfRel().withType("GET"));
+        dto.add(linkTo(methodOn(PersonController.class).findAll()).withRel("findAll").withType("GET"));
+        dto.add(linkTo(methodOn(PersonController.class).create(dto)).withRel("create").withType("POST"));
+        dto.add(linkTo(methodOn(PersonController.class).update(dto)).withRel("update").withType("PUT"));
+        dto.add(linkTo(methodOn(PersonController.class).delete(String.valueOf(dto.getId()))).withRel("delete").withType("DELETE"));
     }
 
 }

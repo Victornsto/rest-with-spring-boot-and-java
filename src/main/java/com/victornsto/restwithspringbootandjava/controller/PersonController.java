@@ -5,6 +5,7 @@ import com.victornsto.restwithspringbootandjava.dto.v2.v1.PersonDtoV2;
 import com.victornsto.restwithspringbootandjava.service.PersonServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,41 +17,36 @@ public class PersonController {
     @Autowired
     private PersonServices service;
 
-    @GetMapping
+    @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, "application/yaml"},
+                consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, "application/yaml"})
     public List<PersonDto> findAll() {
         return service.findAll();
     }
 
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, "application/yaml"}, consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, "application/yaml"})
     public PersonDto findById(@PathVariable(value = "id") String id) {
         return service.findById(id);
     }
 
-    @PostMapping(
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, "application/yaml"}, consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, "application/yaml"})
     public PersonDto create(@RequestBody PersonDto personDto) {
         return service.create(personDto);
     }
 
-    @PostMapping(
-            value = "/v2",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/v2", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, "application/yaml"}, consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, "application/yaml"})
     public PersonDtoV2 createV2(@RequestBody PersonDtoV2 person) {
         return service.createV2(person);
     }
 
-    @PutMapping(
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, "application/yaml"}, consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, "application/yaml"})
     public PersonDto update(@RequestBody PersonDto person) {
         return service.update(person);
     }
 
 
     @DeleteMapping(value = "/{id}")
-    public void delete(@PathVariable(value = "id") String id) {
+    public ResponseEntity<Void> delete(@PathVariable(value = "id") String id) {
         service.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }
