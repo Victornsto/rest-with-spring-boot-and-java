@@ -1,4 +1,4 @@
-package com.victornsto.restwithspringbootandjava.unittests.service;
+package com.victornsto.restwithspringbootandjava.services;
 
 import com.victornsto.restwithspringbootandjava.controller.PersonController;
 import com.victornsto.restwithspringbootandjava.dto.v1.PersonDto;
@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
+
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
@@ -35,7 +36,6 @@ public class PersonServices {
         dto.forEach(PersonServices::addHateoasLinks);
         return dto;
     }
-
     public PersonDto findById(String id) {
         logger.info("Finding one person!");
         var dto = conversionService.convert(
@@ -50,7 +50,6 @@ public class PersonServices {
         logger.info("Finding one person!");
         return personRepository.findById(id).orElseThrow(() -> new ResourceNotFoudException("Person not found!"));
     }
-
     public PersonDto create(PersonDto personDto) {
         logger.info("Creating one person!");
         Person result = new Person();

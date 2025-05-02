@@ -1,4 +1,4 @@
-package com.victornsto.restwithspringbootandjava.unittests.service;
+package com.victornsto.restwithspringbootandjava.services;
 
 import com.victornsto.restwithspringbootandjava.controller.BookController;
 import com.victornsto.restwithspringbootandjava.dto.v1.BookDto;

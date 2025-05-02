@@ -2,7 +2,7 @@ package com.victornsto.restwithspringbootandjava.controller;
 
 import com.victornsto.restwithspringbootandjava.controller.docs.BookControllerDocs;
 import com.victornsto.restwithspringbootandjava.dto.v1.BookDto;
-import com.victornsto.restwithspringbootandjava.unittests.service.BookServices;
+import com.victornsto.restwithspringbootandjava.services.BookServices;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

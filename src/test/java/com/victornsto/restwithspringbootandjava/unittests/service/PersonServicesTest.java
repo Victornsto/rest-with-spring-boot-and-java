@@ -4,6 +4,7 @@ import com.victornsto.restwithspringbootandjava.dto.v1.PersonDto;
 import com.victornsto.restwithspringbootandjava.dto.v2.v1.PersonDtoV2;
 import com.victornsto.restwithspringbootandjava.model.Person;
 import com.victornsto.restwithspringbootandjava.repository.PersonRepository;
+import com.victornsto.restwithspringbootandjava.services.PersonServices;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -44,7 +45,6 @@ class PersonServicesTest {
         mockPersonDto.setFirstName("Victor");
         mockPersonDto.setLastName("Neto");
         mockPersonDto.setAddress("Rua 1");
-        mockPersonDto.setBirthDay(new java.util.Date());
         mockPersonDto.setGender("Male");
         MockitoAnnotations.openMocks(this);
     }

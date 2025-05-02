@@ -3,6 +3,7 @@ package com.victornsto.restwithspringbootandjava.unittests.service;
 import com.victornsto.restwithspringbootandjava.dto.v1.BookDto;
 import com.victornsto.restwithspringbootandjava.model.Book;
 import com.victornsto.restwithspringbootandjava.repository.BookRepository;
+import com.victornsto.restwithspringbootandjava.services.BookServices;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;

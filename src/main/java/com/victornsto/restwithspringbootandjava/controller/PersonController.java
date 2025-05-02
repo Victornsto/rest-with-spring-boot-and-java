@@ -2,7 +2,7 @@ package com.victornsto.restwithspringbootandjava.controller;
 
 import com.victornsto.restwithspringbootandjava.controller.docs.PersonControllerDocs;
 import com.victornsto.restwithspringbootandjava.dto.v1.PersonDto;
-import com.victornsto.restwithspringbootandjava.unittests.service.PersonServices;
+import com.victornsto.restwithspringbootandjava.services.PersonServices;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +27,7 @@ public class PersonController implements PersonControllerDocs {
         return service.findAll();
     }
 
-    @GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, "application/yaml"}, consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, "application/yaml"})
+    @GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, "application/yaml"})
     @Override
     public PersonDto findById(@PathVariable(value = "id") String id) {
         return service.findById(id);
