@@ -1,4 +1,4 @@
-package com.victornsto.restwithspringbootandjava.service;
+package com.victornsto.restwithspringbootandjava.unittests.service;
 
 import com.victornsto.restwithspringbootandjava.controller.PersonController;
 import com.victornsto.restwithspringbootandjava.dto.v1.PersonDto;
@@ -15,7 +15,6 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 public class PersonServices {
@@ -25,7 +24,7 @@ public class PersonServices {
         this.personRepository = personRepository;
         this.conversionService = conversionService;
     }
-    private Logger logger = LoggerFactory.getLogger(PersonServices.class.getName());
+    private final Logger logger = LoggerFactory.getLogger(PersonServices.class.getName());
 
     public List<PersonDto> findAll() {
         logger.info("Finding all people!");
