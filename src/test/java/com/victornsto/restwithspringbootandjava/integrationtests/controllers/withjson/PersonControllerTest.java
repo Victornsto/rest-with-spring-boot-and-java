@@ -71,6 +71,7 @@ class PersonControllerTest extends AbstractIntagrationTest {
         assertNotNull(createdPerson.getLastName());
         assertNotNull(createdPerson.getAddress());
         assertNotNull(createdPerson.getGender());
+        assertNotNull(createdPerson.getEnabled());
         assertTrue(createdPerson.getId() > 0);
 
         assertEquals("John", createdPerson.getFirstName());
@@ -132,6 +133,7 @@ class PersonControllerTest extends AbstractIntagrationTest {
         assertNotNull(createdPerson.getLastName());
         assertNotNull(createdPerson.getAddress());
         assertNotNull(createdPerson.getGender());
+        assertNotNull(createdPerson.getEnabled());
         assertTrue(createdPerson.getId() > 0);
 
         assertEquals("John", createdPerson.getFirstName());
@@ -193,6 +195,7 @@ class PersonControllerTest extends AbstractIntagrationTest {
         assertNotNull(createdPerson.getLastName());
         assertNotNull(createdPerson.getAddress());
         assertNotNull(createdPerson.getGender());
+        assertNotNull(createdPerson.getEnabled());
         assertTrue(createdPerson.getId() > 0);
 
         assertEquals("John", createdPerson.getFirstName());
@@ -249,5 +252,7 @@ class PersonControllerTest extends AbstractIntagrationTest {
         personDto.setLastName("Doe");
         personDto.setAddress("123 Main St");
         personDto.setGender("Male");
+        personDto.setEnabled(true);
+        personDto.setBirthDay(new Date());
     }
 }

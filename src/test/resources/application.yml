@@ -2,6 +2,9 @@ server:
   port: 8888
 cors:
   originPatterns: http://localhost:8888,http://localhost:3000,https://spring.io
+email:
+  subject: "Default Subject"
+  message: "Default Message"
 spring:
   application:
     name: spring-boot
@@ -12,8 +15,18 @@ spring:
     open-in-view: false
     hibernate:
       ddl-auto: none
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${EMAIL_USERNAME}
+    password: ${EMAIL_PASSWORD}
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+      mail.smtp.starttls.required: true
   spring.doc:
     paths-to-match: /api/**
     swagger-ui:
       use-root-path: true
+
 

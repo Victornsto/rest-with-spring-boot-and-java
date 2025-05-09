@@ -3,6 +3,9 @@ package com.victornsto.restwithspringbootandjava.controller;
 import com.victornsto.restwithspringbootandjava.controller.docs.BookControllerDocs;
 import com.victornsto.restwithspringbootandjava.dto.v1.BookDto;
 import com.victornsto.restwithspringbootandjava.services.BookServices;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +22,25 @@ public class BookController implements BookControllerDocs {
 
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, "application/yaml"})
     @Override
-    public List<BookDto> getBooks() {
-        return bookServices.findAll();
+    public ResponseEntity<Page<BookDto>> getBooks(
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
+            @RequestParam(value = "size", defaultValue = "12") Integer size,
+            @RequestParam(value = "direction", defaultValue = "asc") String direction
+    ) {
+        Sort.Direction sort = "asc".equalsIgnoreCase(direction) ? Sort.Direction.ASC : Sort.Direction.DESC;
+        return ResponseEntity.ok(bookServices.findAll(PageRequest.of(page, size, Sort.by(sort, "author"))));
+    }
+
+    @GetMapping(value = "/byTitle/{title}",produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, "application/yaml"})
+    @Override
+    public ResponseEntity<Page<BookDto>> getBooksByTitle(
+            @PathVariable("title") String title,
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
+            @RequestParam(value = "size", defaultValue = "12") Integer size,
+            @RequestParam(value = "direction", defaultValue = "asc") String direction)
+             {
+        Sort.Direction sort = "asc".equalsIgnoreCase(direction) ? Sort.Direction.ASC : Sort.Direction.DESC;
+        return ResponseEntity.ok(bookServices.findAllByTitle(title ,PageRequest.of(page, size, Sort.by(sort, "author"))));
     }
 
     @GetMapping(value ="/{id}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, "application/yaml"})

@@ -5,13 +5,19 @@ import com.victornsto.restwithspringbootandjava.model.Book;
 import com.victornsto.restwithspringbootandjava.repository.BookRepository;
 import com.victornsto.restwithspringbootandjava.services.BookServices;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,6 +30,7 @@ class BookServicesTest {
     private final ConversionService conversionService = mock(ConversionService.class);
     private final BookServices bookServices = new BookServices(bookRepository, conversionService);
     BookDto bookDto = new BookDto();
+    Book book = new Book();
 
 
     @BeforeEach
@@ -33,26 +40,48 @@ class BookServicesTest {
         bookDto.setTitle("Test Book");
         bookDto.setLaunchDate(new java.util.Date());
         bookDto.setPrice(29.99);
+
+        book.setId(1L);
+        book.setAuthor("Test Author");
+        book.setTitle("Test Book");
+        book.setLaunchDate(new java.util.Date());
+        book.setPrice(29.99);
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
     void findAll() {
-        Book book = new Book();
-        book.setId(1L);
-        book.setTitle("Test Book");
-        book.setAuthor("Test Author");
-        book.setLaunchDate(new java.util.Date());
-        book.setPrice(29.99);
-        when(bookRepository.findAll()).thenReturn(List.of(book));
+        PageRequest pageable = PageRequest.of(0, 10);
+        Page<Book> bookPage = new PageImpl<>(List.of(book));
+        when(bookRepository.findAll(pageable)).thenReturn(bookPage);
         when(conversionService.convert(any(Book.class), eq(BookDto.class))).thenReturn(bookDto);
-        List<BookDto> result = bookServices.findAll();
+        var result = bookServices.findAll(pageable);
         assertNotNull(result);
-        assertEquals(1, result.size());
-        assertEquals(1L, result.get(0).getId());
-        assertEquals("Test Book", result.get(0).getTitle());
-        verify(bookRepository, times(1)).findAll();
+        assertEquals(1, result.getTotalElements());
+        BookDto resultDto = result.getContent().get(0);
+        assertEquals(1L, resultDto.getId());
+        assertEquals("Test Book", resultDto.getTitle());
+        verify(bookRepository, times(1)).findAll(any(Pageable.class));
         verify(conversionService, times(1)).convert(book, BookDto.class);
+    }
+
+    @Test
+    void findAllByTitle() {
+        String title = "Test";
+        PageRequest pageable = PageRequest.of(0, 10);
+        Page<Book> bookPage = new PageImpl<>(List.of(book));
+        when(bookRepository.findByTitleContainingIgnoreCase(eq(title), any(Pageable.class))).thenReturn(bookPage);
+        when(conversionService.convert(any(Book.class), eq(BookDto.class))).thenReturn(bookDto);
+
+        var result = bookServices.findAllByTitle(title, pageable);
+
+        assertNotNull(result);
+        assertEquals(1, result.getTotalElements());
+        BookDto resultDto = result.getContent().get(0);
+        assertEquals(1L, resultDto.getId());
+        assertEquals("Test Book", resultDto.getTitle());
+        verify(bookRepository, times(1)).findByTitleContainingIgnoreCase(eq(title), any(Pageable.class));
+        verify(conversionService, times(2)).convert(book, BookDto.class);
     }
 
     @Test

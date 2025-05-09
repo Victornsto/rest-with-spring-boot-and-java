@@ -30,5 +30,7 @@ public class Person implements Serializable {
     private String address;
     @Column(nullable = false, length = 6)
     private String gender;
+    @Column(nullable = true, length = 10)
+    private Boolean enabled;
 
 }

@@ -8,6 +8,9 @@ import com.victornsto.restwithspringbootandjava.repository.BookRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,14 +29,24 @@ public class BookServices {
         this.conversionService = conversionService;
     }
     
-    public List<BookDto> findAll() {
+    public Page<BookDto> findAll(Pageable pageable) {
         logger.info("Finding all books!");
-        List<BookDto> dto = repository.findAll()
-                .stream()
-                .map(book -> conversionService.convert(book, BookDto.class))
-                .toList();
-        dto.forEach(BookServices::addHateoasLinks);
-        return dto;
+        return repository.findAll(pageable)
+                .map(book -> {
+                    BookDto dto = conversionService.convert(book, BookDto.class);
+                    addHateoasLinks(dto);
+                    return dto;
+                });
+    }
+
+    public Page<BookDto> findAllByTitle(String title ,Pageable pageable) {
+        logger.info("Finding all books!");
+        return repository.findByTitleContainingIgnoreCase(title, pageable)
+                .map(book -> {
+                    BookDto dto = conversionService.convert(book, BookDto.class);
+                    addHateoasLinks(dto);
+                    return dto;
+                });
     }
 
     public BookDto findById(Long id) {
@@ -66,7 +79,7 @@ public class BookServices {
 
     private static void addHateoasLinks(BookDto bookDto) {
         bookDto.add(linkTo(methodOn(BookController.class).getBookById(bookDto.getId())).withSelfRel());
-        bookDto.add(linkTo(methodOn(BookController.class).getBooks()).withRel("findAll"));
+        bookDto.add(linkTo(methodOn(BookController.class).getBooks(1, 12, "asc")).withRel("findAll"));
         bookDto.add(linkTo(methodOn(BookController.class).createBook(bookDto)).withRel("create"));
         bookDto.add(linkTo(methodOn(BookController.class).updateBook(bookDto)).withRel("update"));
         bookDto.add(linkTo(methodOn(BookController.class).deleteBook(bookDto.getId())).withRel("delete"));

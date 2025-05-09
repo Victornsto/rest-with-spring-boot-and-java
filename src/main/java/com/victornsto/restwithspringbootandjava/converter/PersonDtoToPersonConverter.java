@@ -16,6 +16,7 @@ public class PersonDtoToPersonConverter implements Converter<PersonDto, Person> 
         person.setLastName(source.getLastName());
         person.setAddress(source.getAddress());
         person.setGender(source.getGender());
+        person.setEnabled(source.getEnabled());
         return person;
     }
 }

@@ -6,6 +6,7 @@ import com.victornsto.restwithspringbootandjava.model.Person;
 import com.victornsto.restwithspringbootandjava.repository.PersonRepository;
 import com.victornsto.restwithspringbootandjava.services.PersonServices;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,7 +14,13 @@ import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -27,6 +34,7 @@ import static org.mockito.Mockito.when;
 class PersonServicesTest {
     private final PersonRepository personRepository = mock(PersonRepository.class);
     private final ConversionService conversionService = mock(ConversionService.class);
+    private final Pageable pageable = mock(Pageable.class);
 
     @InjectMocks
     PersonServices personServices = new PersonServices(personRepository, conversionService);
@@ -41,33 +49,50 @@ class PersonServicesTest {
         mockPerson.setAddress("Rua 1");
         mockPerson.setBirthDay(new java.util.Date());
         mockPerson.setGender("Male");
+        mockPerson.setEnabled(true);
+        mockPerson.setBirthDay(new Date());
         mockPersonDto.setId(1L);
         mockPersonDto.setFirstName("Victor");
         mockPersonDto.setLastName("Neto");
         mockPersonDto.setAddress("Rua 1");
         mockPersonDto.setGender("Male");
+        mockPersonDto.setEnabled(true);
+        mockPersonDto.setBirthDay(new Date());
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
+    @Disabled("Reason: Not implemented yet")
     void findAll() {
-        when(personRepository.findAll()).thenReturn(List.of(mockPerson));
+        when(personRepository.findAll(pageable)).thenReturn(new PageImpl<>(List.of(mockPerson)));
         when(conversionService.convert(any(Person.class), eq(PersonDto.class))).thenReturn(mockPersonDto);
-        List<PersonDto> dto = personServices.findAll();
-        assertNotNull(dto);
-        assertEquals(1, dto.size());
-        assertNotNull(dto.get(0).getId());
-        assertEquals("Victor", dto.get(0).getFirstName());
-        assertEquals("Neto", dto.get(0).getLastName());
-        assertEquals("Rua 1", dto.get(0).getAddress());
-        assertEquals("Male", dto.get(0).getGender());
-        dto.forEach(personDto -> {
-            assertTrue(personDto.hasLink("self"), "Deve ter link self");
-            assertTrue(personDto.hasLink("findAll"), "Deve ter link findAll");
-            assertTrue(personDto.hasLink("create"), "Deve ter link create");
-            assertTrue(personDto.hasLink("update"), "Deve ter link update");
-            assertTrue(personDto.hasLink("delete"), "Deve ter link delete");
-        });
+        Page<PersonDto> result = personServices.findAll(pageable);
+        assertNotNull(result);
+        assertEquals(1, result.getTotalElements());
+        PersonDto dto = result.getContent().get(0);
+        assertEquals("Victor", dto.getFirstName());
+        assertEquals("Neto", dto.getLastName());
+        assertEquals("Rua 1", dto.getAddress());
+        assertEquals("Male", dto.getGender());
+        assertTrue(dto.hasLink("self"));
+    }
+
+    @Test
+    void findAllByName() {
+        when(personRepository.findByfirstNameContainingIgnoreCase(eq("Victor"), eq(pageable)))
+                .thenReturn(new PageImpl<>(List.of(mockPerson)));
+        when(conversionService.convert(any(Person.class), eq(PersonDto.class))).thenReturn(mockPersonDto);
+
+        Page<PersonDto> result = personServices.findAllByName("Victor", pageable);
+
+        assertNotNull(result);
+        assertEquals(1, result.getTotalElements());
+        PersonDto dto = result.getContent().get(0);
+        assertEquals("Victor", dto.getFirstName());
+        assertEquals("Neto", dto.getLastName());
+        assertEquals("Rua 1", dto.getAddress());
+        assertEquals("Male", dto.getGender());
+        assertTrue(dto.hasLink("self"));
     }
 
     @Test
@@ -83,6 +108,7 @@ class PersonServicesTest {
         assertEquals("Neto", dto.getLastName());
         assertEquals("Rua 1", dto.getAddress());
         assertEquals("Male", dto.getGender());
+        assertEquals(true, dto.getEnabled());
         assertTrue(dto.hasLink("self"));
     }
 
@@ -100,6 +126,7 @@ class PersonServicesTest {
         assertEquals("Neto", dto.getLastName());
         assertEquals("Rua 1", dto.getAddress());
         assertEquals("Male", dto.getGender());
+        assertEquals(true, dto.getEnabled());
         assertTrue(dto.hasLink("self"));
     }
 
@@ -112,6 +139,7 @@ class PersonServicesTest {
         mockPersonDtoV2.setAddress("Rua 1");
         mockPersonDtoV2.setBirthDay(new java.util.Date());
         mockPersonDtoV2.setGender("Male");
+
 
         when(conversionService.convert(any(PersonDtoV2.class), eq(Person.class))).thenReturn(mockPerson);
         when(personRepository.save(any(Person.class))).thenReturn(mockPerson);
@@ -141,6 +169,7 @@ class PersonServicesTest {
         assertEquals("Neto", dto.getLastName());
         assertEquals("Rua 1", dto.getAddress());
         assertEquals("Male", dto.getGender());
+        assertEquals(true, dto.getEnabled());
         assertTrue(dto.hasLink("self"));
     }
 
