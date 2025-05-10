@@ -2,7 +2,6 @@ package com.victornsto.restwithspringbootandjava.services;
 
 import com.victornsto.restwithspringbootandjava.controller.PersonController;
 import com.victornsto.restwithspringbootandjava.dto.v1.PersonDto;
-import com.victornsto.restwithspringbootandjava.dto.v2.v1.PersonDtoV2;
 import com.victornsto.restwithspringbootandjava.exceptions.ResourceNotFoudException;
 import com.victornsto.restwithspringbootandjava.model.Person;
 import com.victornsto.restwithspringbootandjava.repository.PersonRepository;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Service;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -75,16 +73,6 @@ public class PersonServices {
         assert dto != null;
         addHateoasLinks(dto);
         return dto;
-    }
-
-    public PersonDtoV2 createV2(PersonDtoV2 person) {
-        logger.info("Creating one person!");
-        Person result = new Person();
-        if (person.getId() == null) {
-            result = personRepository.save(Objects.requireNonNull(conversionService.convert(person, Person.class)));
-
-        }
-        return conversionService.convert(result, PersonDtoV2.class);
     }
 
     public PersonDto update(PersonDto personDto) {

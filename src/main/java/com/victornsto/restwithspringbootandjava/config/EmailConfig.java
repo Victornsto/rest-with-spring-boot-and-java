@@ -7,13 +7,13 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConfigurationProperties(prefix = "spring.email")
+@ConfigurationProperties(prefix = "spring.mail")
 @Getter
 @Setter
 @RequiredArgsConstructor
 public class EmailConfig {
     private String host;
-    private String port;
+    private int port;
     private String username;
     private String password;
     private String from;

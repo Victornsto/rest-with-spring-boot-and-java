@@ -1,7 +1,6 @@
 package com.victornsto.restwithspringbootandjava.unittests.service;
 
 import com.victornsto.restwithspringbootandjava.dto.v1.PersonDto;
-import com.victornsto.restwithspringbootandjava.dto.v2.v1.PersonDtoV2;
 import com.victornsto.restwithspringbootandjava.model.Person;
 import com.victornsto.restwithspringbootandjava.repository.PersonRepository;
 import com.victornsto.restwithspringbootandjava.services.PersonServices;
@@ -17,9 +16,7 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PagedResourcesAssembler;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -128,31 +125,6 @@ class PersonServicesTest {
         assertEquals("Male", dto.getGender());
         assertEquals(true, dto.getEnabled());
         assertTrue(dto.hasLink("self"));
-    }
-
-    @Test
-    void createV2() {
-        PersonDtoV2 mockPersonDtoV2 = new PersonDtoV2();
-        mockPersonDtoV2.setId(1L);
-        mockPersonDtoV2.setFirstName("Victor");
-        mockPersonDtoV2.setLastName("Neto");
-        mockPersonDtoV2.setAddress("Rua 1");
-        mockPersonDtoV2.setBirthDay(new java.util.Date());
-        mockPersonDtoV2.setGender("Male");
-
-
-        when(conversionService.convert(any(PersonDtoV2.class), eq(Person.class))).thenReturn(mockPerson);
-        when(personRepository.save(any(Person.class))).thenReturn(mockPerson);
-        when(conversionService.convert(any(Person.class), eq(PersonDtoV2.class))).thenReturn(mockPersonDtoV2);
-
-        PersonDtoV2 dto = personServices.createV2(mockPersonDtoV2);
-
-        assertNotNull(dto);
-        assertEquals(1L, dto.getId());
-        assertEquals("Victor", dto.getFirstName());
-        assertEquals("Neto", dto.getLastName());
-        assertEquals("Rua 1", dto.getAddress());
-        assertEquals("Male", dto.getGender());
     }
 
     @Test

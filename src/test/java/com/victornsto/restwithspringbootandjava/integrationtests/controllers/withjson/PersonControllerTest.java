@@ -48,7 +48,7 @@ class PersonControllerTest extends AbstractIntagrationTest {
         mockPerson();
         spec = new RequestSpecBuilder()
                 .addHeader(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.ORIGIN_LOCAL)
-                .setBasePath("/person")
+                .setBasePath("/api/v1/person")
                 .setPort(TestConfigs.SERVER_PORT)
                 .addFilter(new RequestLoggingFilter(LogDetail.ALL))
                 .addFilter(new ResponseLoggingFilter(LogDetail.ALL))
@@ -86,7 +86,7 @@ class PersonControllerTest extends AbstractIntagrationTest {
         mockPerson();
         spec = new RequestSpecBuilder()
                 .addHeader(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.ORIGIN_SEMERU)
-                .setBasePath("/person")
+                .setBasePath("/api/v1/person")
                 .setPort(TestConfigs.SERVER_PORT)
                 .addFilter(new RequestLoggingFilter(LogDetail.ALL))
                 .addFilter(new ResponseLoggingFilter(LogDetail.ALL))
@@ -110,7 +110,7 @@ class PersonControllerTest extends AbstractIntagrationTest {
     void findById() throws JsonProcessingException {
         spec = new RequestSpecBuilder()
                 .addHeader(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.ORIGIN_LOCAL)
-                .setBasePath("/person")
+                .setBasePath("/api/v1/person")
                 .setPort(TestConfigs.SERVER_PORT)
                 .addFilter(new RequestLoggingFilter(LogDetail.ALL))
                 .addFilter(new ResponseLoggingFilter(LogDetail.ALL))
@@ -147,7 +147,7 @@ class PersonControllerTest extends AbstractIntagrationTest {
     void findByIdWithWrongOrigin() throws JsonProcessingException {
         spec = new RequestSpecBuilder()
                 .addHeader(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.ORIGIN_SEMERU)
-                .setBasePath("/person")
+                .setBasePath("/api/v1/person")
                 .setPort(TestConfigs.SERVER_PORT)
                 .addFilter(new RequestLoggingFilter(LogDetail.ALL))
                 .addFilter(new ResponseLoggingFilter(LogDetail.ALL))
@@ -172,7 +172,7 @@ class PersonControllerTest extends AbstractIntagrationTest {
     void update() throws JsonProcessingException {
         spec = new RequestSpecBuilder()
                 .addHeader(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.ORIGIN_LOCAL)
-                .setBasePath("/person")
+                .setBasePath("/api/v1/person")
                 .setPort(TestConfigs.SERVER_PORT)
                 .addFilter(new RequestLoggingFilter(LogDetail.ALL))
                 .addFilter(new ResponseLoggingFilter(LogDetail.ALL))
@@ -209,7 +209,7 @@ class PersonControllerTest extends AbstractIntagrationTest {
     void updateWithWrongOrigin() throws JsonProcessingException {
         spec = new RequestSpecBuilder()
                 .addHeader(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.ORIGIN_SEMERU)
-                .setBasePath("/person")
+                .setBasePath("/api/v1/person")
                 .setPort(TestConfigs.SERVER_PORT)
                 .addFilter(new RequestLoggingFilter(LogDetail.ALL))
                 .addFilter(new ResponseLoggingFilter(LogDetail.ALL))
@@ -232,7 +232,7 @@ class PersonControllerTest extends AbstractIntagrationTest {
     void delete() {
         spec = new RequestSpecBuilder()
                 .addHeader(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.ORIGIN_LOCAL)
-                .setBasePath("/person")
+                .setBasePath("/api/v1/person")
                 .setPort(TestConfigs.SERVER_PORT)
                 .addFilter(new RequestLoggingFilter(LogDetail.ALL))
                 .addFilter(new ResponseLoggingFilter(LogDetail.ALL))

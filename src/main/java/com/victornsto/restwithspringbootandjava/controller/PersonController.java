@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/person")
+@RequestMapping("/api/v1/person")
 @Tag(name = "Person", description = "Endpoints for managing persons")
 public class PersonController implements PersonControllerDocs {
 
