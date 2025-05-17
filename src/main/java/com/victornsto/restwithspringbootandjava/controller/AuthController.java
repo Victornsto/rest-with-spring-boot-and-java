@@ -23,7 +23,7 @@ public class AuthController implements AuthControllerDocs {
         if (validationCredentials(credentials)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid client request");
         ResponseEntity<TokenDto> token = authService.singIn(credentials);
         if (token == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid client request");
-        return ResponseEntity.ok().body(token);
+        return token;
     }
 
     @PutMapping("/refresh/{username}")
@@ -33,7 +33,7 @@ public class AuthController implements AuthControllerDocs {
         if (parametersAreInvalid(username, refreshToken)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid client request");
         ResponseEntity<TokenDto> token = authService.refreshToken(username, refreshToken);
         if (token == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid client request");
-        return ResponseEntity.ok().body(token);
+        return token;
     }
 
     @PostMapping(value = "/createUser",
