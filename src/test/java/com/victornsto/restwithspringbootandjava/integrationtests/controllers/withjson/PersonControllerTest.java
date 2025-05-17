@@ -31,6 +31,7 @@ class PersonControllerTest extends AbstractIntagrationTest {
     private static ObjectMapper mapper;
     private static PersonDto personDto;
     private static TokenDto tokenDto;
+
     @BeforeAll
     static void setUp() {
         mapper = new ObjectMapper();
