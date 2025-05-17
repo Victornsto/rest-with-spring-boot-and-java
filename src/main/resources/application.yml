@@ -5,6 +5,11 @@ cors:
 email:
   subject: "Default Subject"
   message: "Default Message"
+security:
+  jwt:
+    token:
+      secret: 53cre37
+      expire-length: 3600000
 spring:
   application:
     name: spring-boot
@@ -28,7 +33,9 @@ spring:
         mail.smtp.starttls.enable: true
         mail.smtp.starttls.required: true
   spring.doc:
-    paths-to-match: /api/**
+    paths-to-match:
+      -/api/**
+      -/auth/**
     swagger-ui:
       use-root-path: true
 

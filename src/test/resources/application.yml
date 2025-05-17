@@ -5,6 +5,9 @@ cors:
 email:
   subject: "Default Subject"
   message: "Default Message"
+security:
+  secret: 53cre37
+  expire-length: 3600000
 spring:
   application:
     name: spring-boot

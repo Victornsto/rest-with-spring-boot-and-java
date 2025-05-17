@@ -62,6 +62,7 @@ public class PersonServices {
         logger.info("Finding one person!");
         return personRepository.findById(id).orElseThrow(() -> new ResourceNotFoudException("Person not found!"));
     }
+
     public PersonDto create(PersonDto personDto) {
         logger.info("Creating one person!");
         Person result = new Person();

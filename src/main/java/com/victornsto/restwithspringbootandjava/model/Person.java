@@ -1,9 +1,11 @@
 package com.victornsto.restwithspringbootandjava.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -32,5 +34,15 @@ public class Person implements Serializable {
     private String gender;
     @Column(nullable = true, length = 10)
     private Boolean enabled;
+
+    @Size(max = 255)
+    @ColumnDefault("'https://pub.erudio.com.br/meus-cursos'")
+    @Column(name = "wikipedia_profile_url")
+    private String wikipediaProfileUrl;
+
+    @Size(max = 255)
+    @ColumnDefault("'https://raw.githubusercontent.com/leandrocgsi/rest-with-spring-boot-and-java-erudio/refs/heads/main/photos/00_some_person.jpg'")
+    @Column(name = "photo_url")
+    private String photoUrl;
 
 }
